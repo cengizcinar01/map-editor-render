@@ -46,9 +46,9 @@ exports.getMap = async (req, res) => {
       .png()
       .toBuffer();
 
-    res.type("png").send(img);
+    return res.type("png").send(img);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
