@@ -7,13 +7,7 @@ RUN apt-get update && apt-get install -y \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
-    libjpeg62-turbo \
-    libpng-dev \
-    libwebp-dev \
-    libtiff-dev \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libgif-dev
+    xvfb
 
 COPY package*.json ./
 
@@ -23,4 +17,4 @@ COPY . .
 
 EXPOSE 5011
 
-CMD ["npm", "start"]
+CMD ["xvfb-run", "--auto-servernum", "--server-args", "-screen 0 1280x800x24", "npm", "start"]
