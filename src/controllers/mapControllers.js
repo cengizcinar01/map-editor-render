@@ -25,8 +25,8 @@ exports.getMap = async (req, res) => {
     const buffer = await new Promise((resolve, reject) => {
       map.render(
         { zoom: +zoom, center: [+lng, +lat], width, height },
-        (err, buffer) => {
-          if (err) reject(err);
+        (error, buffer) => {
+          if (error) reject(error);
           else resolve(buffer);
         }
       );
