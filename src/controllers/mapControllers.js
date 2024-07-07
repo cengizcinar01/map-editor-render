@@ -2,14 +2,14 @@ const mbgl = require("@maplibre/maplibre-gl-native");
 const axios = require("axios");
 const sharp = require("sharp");
 const mapUtils = require("../utils/mapUtils");
-const mapConfig = require("../configs/mapConfig");
+const serverConfig = require("../configs/serverConfig");
 const { layerScaleZoomLevel } = require("../configs/layerConfig");
 
 exports.getMap = async (req, res) => {
   const { lng, lat, zoom, mapWidth, mapHeight, style } = req.query;
 
   try {
-    const styleURL = `${mapConfig.styleURL}/styles/${style}/style.json`;
+    const styleURL = `${serverConfig.styleURL}/styles/${style}/style.json`;
     const { data } = await axios.get(styleURL);
 
     const adjustedData = mapUtils.adjustStyleJson(
