@@ -6,15 +6,13 @@ const mapConfig = require("../configs/mapConfig");
 const { layerScaleZoomLevel, scaleFactors } = require("../configs/layerConfig");
 
 exports.getMap = async (req, res) => {
-  const { lng, lat, zoom, mapWidth, mapHeight, format, orientation, style } =
-    req.query;
+  const { lng, lat, zoom, mapWidth, mapHeight, format, style } = req.query;
 
   try {
     const styleURL = `${mapConfig.styleURL}/styles/${style}/style.json`;
     const { data } = await axios.get(styleURL);
 
-    const formatKey = orientation === "L" ? `${format}@L` : format;
-    const scaleFactor = scaleFactors[formatKey] || 1;
+    const scaleFactor = scaleFactors[format] || 1;
     console.log("Calculated Scale Factor:", scaleFactor);
 
     const dynamicLayerScaleZoomLevel = mapUtils.scaleLayerZoomLevel(
