@@ -3,26 +3,19 @@ const axios = require("axios");
 const sharp = require("sharp");
 const mapUtils = require("../utils/mapUtils");
 const mapConfig = require("../configs/mapConfig");
-const { layerScaleZoomLevel, scaleFactors } = require("../configs/layerConfig");
+const { layerScaleZoomLevel } = require("../configs/layerConfig");
 
 exports.getMap = async (req, res) => {
-  const { lng, lat, zoom, mapWidth, mapHeight, format, style } = req.query;
+  const { lng, lat, zoom, mapWidth, mapHeight, style } = req.query;
 
   try {
     const styleURL = `${mapConfig.styleURL}/styles/${style}/style.json`;
     const { data } = await axios.get(styleURL);
 
-    const scaleFactor = scaleFactors[format] || 1;
-    console.log("Calculated Scale Factor:", scaleFactor);
-
-    const dynamicLayerScaleZoomLevel = mapUtils.scaleLayerZoomLevel(
-      layerScaleZoomLevel,
-      scaleFactor
-    );
     const adjustedData = mapUtils.adjustStyleJson(
       data,
       300,
-      dynamicLayerScaleZoomLevel
+      layerScaleZoomLevel
     );
 
     const map = new mbgl.Map({ request: mapUtils.axiosRequestAdapter });
