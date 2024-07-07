@@ -7,9 +7,7 @@ RUN apt-get update && apt-get install -y \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
-    libjpeg-dev \
-    libicu-dev \
-    libxcb-cursor-dev
+    libjpeg-turbo8
 
 COPY package*.json ./
 
