@@ -5,31 +5,18 @@ exports.axiosRequestAdapter = async (req, cb) => {
   try {
     const { data } = await axios.get(req.url, { responseType: "arraybuffer" });
     cb(null, { data });
-  } catch (err) {
-    cb(err);
+  } catch (error) {
+    cb(error);
   }
 };
 
-exports.scaleLayerZoomLevel = (original, scaleFactor) =>
-  Object.fromEntries(
-    Object.entries(original).map(([key, value]) => [
-      key,
-      Object.fromEntries(
-        Object.entries(value).map(([zoom, scale]) => [
-          zoom,
-          scale * scaleFactor,
-        ])
-      ),
-    ])
-  );
-
-exports.adjustStyleJson = (styleJson, dpi, dynamicLayerScaleZoomLevel) => {
+exports.adjustStyleJson = (styleJson, dpi, layerScaleZoomLevelConfig) => {
   if (!styleJson.layers) return styleJson;
   return {
     ...styleJson,
     layers: styleJson.layers.map((layer) => {
       const layerScale =
-        dynamicLayerScaleZoomLevel[layersToScale[layer.id] || "default"];
+        layerScaleZoomLevelConfig[layersToScale[layer.id] ?? "default"];
       const stops = layer.paint?.["line-width"]?.stops;
       return stops
         ? {
