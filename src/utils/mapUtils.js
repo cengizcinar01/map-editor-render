@@ -16,7 +16,7 @@ exports.adjustStyleJson = (styleJson, dpi, layerScaleZoomLevelConfig) => {
     ...styleJson,
     layers: styleJson.layers.map((layer) => {
       const layerScale =
-        layerScaleZoomLevelConfig[layersToScale[layer.id] || "default"];
+        layerScaleZoomLevelConfig[layersToScale[layer.id] ?? "default"];
       const stops = layer.paint?.["line-width"]?.stops;
       return stops
         ? {
