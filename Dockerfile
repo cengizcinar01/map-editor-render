@@ -31,10 +31,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/libwebp.so.7 /usr/lib/x86_64-linux-gnu/libwebp.so.7 || true \
-    && ldconfig
-
-RUN ls -l /usr/lib/x86_64-linux-gnu/libicu*
+RUN ARCH=$(dpkg --print-architecture) && \
+    if [ "$ARCH" = "amd64" ]; then \
+        LIB_PATH="/usr/lib/x86_64-linux-gnu"; \
+    elif [ "$ARCH" = "arm64" ]; then \
+        LIB_PATH="/usr/lib/aarch64-linux-gnu"; \
+    else \
+        echo "Unsupported architecture: $ARCH" && exit 1; \
+    fi && \
+    ln -s $LIB_PATH/libwebp.so.7 $LIB_PATH/libwebp.so.7 || true && \
+    ldconfig && \
+    ls -l $LIB_PATH/libicu*
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
