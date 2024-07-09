@@ -60,7 +60,7 @@ EXPOSE 5011
 
 ENV DISPLAY=:99
 
-RUN echo '#!/bin/bash\nXvfb :99 -ac -screen 0 1280x1024x24 &\nsleep 1\nnpm start' > /start.sh \
+RUN echo '#!/bin/bash\nXvfb :99 -ac -screen 0 1280x1024x24 &\nXVFB_PID=$!\nsleep 1\nnpm start\nkill $XVFB_PID' > /start.sh \
     && chmod +x /start.sh
 
 CMD ["/start.sh"]
